@@ -15,6 +15,7 @@
     self = [super init];
     if (self != nil) {
         _currentSquare = 0;
+        _gameOver = NO;
         
         _specialSquares = @{@(4):@(14),
                             @(9):@(31),

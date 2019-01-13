@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property NSInteger currentSquare;
 @property NSDictionary *specialSquares;
+@property BOOL gameOver;
 
 - (void)roll;
 

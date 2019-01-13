@@ -12,13 +12,13 @@
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-        BOOL keepPlaying = YES;
         NSString *prompt = @"To play snakes and ladders, type roll (or r): ";
         char input[255];
         NSString *userInput;
         Player *player = [[Player alloc] init];
+
         
-        while(YES == keepPlaying){
+        while(NO == [player gameOver]){
             NSLog(@"%@", prompt);
             fgets(input, 255, stdin);
             userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
@@ -31,6 +31,11 @@ int main(int argc, const char * argv[]) {
             {
                 NSLog(@"you typed %@", userInput);
                 [player roll];
+                
+                if([player currentSquare] >= 100){
+                    [player setGameOver:YES];
+                    NSLog(@"game is over");
+                }
             }
             
         }
