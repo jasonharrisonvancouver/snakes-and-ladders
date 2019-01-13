@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "Player.h"
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
@@ -15,6 +16,7 @@ int main(int argc, const char * argv[]) {
         NSString *prompt = @"To play snakes and ladders, type roll (or r): ";
         char input[255];
         NSString *userInput;
+        Player *player = [[Player alloc] init];
         
         while(YES == keepPlaying){
             NSLog(@"%@", prompt);
@@ -28,6 +30,7 @@ int main(int argc, const char * argv[]) {
                ([trimmedString isEqualToString:@"roll\n"]))
             {
                 NSLog(@"you typed %@", userInput);
+                [player roll];
             }
             
         }
