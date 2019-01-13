@@ -14,7 +14,21 @@
 {
     self = [super init];
     if (self != nil) {
-        self.currentSquare = 0;
+        _currentSquare = 0;
+        
+        _specialSquares = @{@(4):@(14),
+                            @(9):@(31),
+                            @(17):@(7),
+                            @(20):@(38),
+                            @(28):@(84),
+                            @(40):@(59),
+                            @(51):@(67),
+                            @(63):@(81),
+                            @(64):@(60),
+                            @(89):@(26),
+                            @(95):@(75),
+                            @(99):@(78)
+                            };
     }
     return self;
 }
@@ -27,8 +41,20 @@
     long currentSquare = self.currentSquare;
     long newSquare = currentSquare + (long)dieValue;
     
-    self.currentSquare = newSquare;
-    NSLog(@"old square was %ld and new is %ld", currentSquare, newSquare);
+    if([_specialSquares objectForKey:@(newSquare)] != nil){
+        // the new square is a snake or ladder...
+        NSLog(@"special square %ld", newSquare);
+        long brandNewSquare = [[_specialSquares objectForKey:@(newSquare)] longValue];
+        self.currentSquare = brandNewSquare;
+        NSLog(@"old square was %ld and new is %ld", currentSquare, brandNewSquare);
+
+    }else{
+        self.currentSquare = newSquare;
+        NSLog(@"old square was %ld and new is %ld", currentSquare, newSquare);
+
+    }
+  
+    
     
 }
 

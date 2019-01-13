@@ -13,6 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface Player : NSObject
 
 @property NSInteger currentSquare;
+@property NSDictionary *specialSquares;
 
 - (void)roll;
 
