@@ -12,8 +12,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface Player : NSObject
 
-@property NSInteger currentSquare;
-@property NSDictionary *specialSquares;
+@property (nonatomic, readwrite)NSInteger currentSquare;
+@property (nonatomic, readonly, strong)NSDictionary *specialSquares;
+@property (nonatomic, strong, readwrite)NSString *name;
 @property BOOL gameOver;
 
 - (void)roll;

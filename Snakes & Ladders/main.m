@@ -7,19 +7,52 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "Player.h"
+#import "PlayerManager.h"
+
+void instantiatePlayers(PlayerManager **playerManager){
+    NSString *numPlayersPrompt = @"How many players? ";
+    NSString *playerNamePrompt = @"Name of player ";
+    char input[255];
+    NSString *userInput;
+    Player *player = [[Player alloc] init];
+    NSLog(@"%@", numPlayersPrompt);
+    fgets(input, 255, stdin);
+    
+    
+    userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
+    
+    NSString *trimmedString = [userInput stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+    
+    int numPlayers = [trimmedString intValue];
+
+    for(int i = 0; i < numPlayers; i++){
+        
+        NSLog(@"%@%d> ", playerNamePrompt, i);
+        fgets(input, 255, stdin);
+        userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
+        [player setName:userInput];
+        [[*playerManager players] addObject:player];
+        NSLog(@"adding player number %d (%@)", i, [player name]);
+    }
+    NSLog(@"...finished adding players to player list...");
+}
 
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-        NSString *prompt = @"To play snakes and ladders, type roll (or r): ";
+        NSString *playGamePrompt = @"To play snakes and ladders, type roll (or r): ";
         char input[255];
         NSString *userInput;
-        Player *player = [[Player alloc] init];
+        //Player *player = [[Player alloc] init];
+        PlayerManager *playerManager = [[PlayerManager alloc] init];
+        
+        instantiatePlayers(&playerManager);
 
+        Player *player = [[Player alloc] init];
+        player = [[playerManager players] objectAtIndex:0];
         
         while(NO == [player gameOver]){
-            NSLog(@"%@", prompt);
+            NSLog(@"%@", playGamePrompt);
             fgets(input, 255, stdin);
             userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
             

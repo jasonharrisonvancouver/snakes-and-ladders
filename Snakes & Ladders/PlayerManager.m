@@ -10,4 +10,13 @@
 
 @implementation PlayerManager
 
+- (instancetype)init
+{
+    self = [super init];
+    if (self != nil) {
+        _players = [[NSMutableArray<Player *> alloc] init];
+    }
+    return self;
+}
+
 @end
