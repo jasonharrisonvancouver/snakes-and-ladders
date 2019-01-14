@@ -14,6 +14,10 @@ NS_ASSUME_NONNULL_BEGIN
 @interface PlayerManager : NSObject
 
 @property (nonatomic, readwrite, strong)NSMutableArray<Player *> *players;
+@property (nonatomic, readwrite, strong)Player *currentPlayer;
+
+- (void)roll;
+- (void)createPlayer:(NSString *)name;
 @end
 
 NS_ASSUME_NONNULL_END

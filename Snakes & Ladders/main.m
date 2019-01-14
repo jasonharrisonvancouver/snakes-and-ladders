@@ -14,27 +14,40 @@ void instantiatePlayers(PlayerManager **playerManager){
     NSString *playerNamePrompt = @"Name of player ";
     char input[255];
     NSString *userInput;
-    Player *player = [[Player alloc] init];
-    NSLog(@"%@", numPlayersPrompt);
-    fgets(input, 255, stdin);
+   // Player *player = [[Player alloc] init];
     
     
-    userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
     
-    NSString *trimmedString = [userInput stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-    
-    int numPlayers = [trimmedString intValue];
-
-    for(int i = 0; i < numPlayers; i++){
+    while(YES){
         
-        NSLog(@"%@%d> ", playerNamePrompt, i);
+        NSLog(@"%@", numPlayersPrompt);
         fgets(input, 255, stdin);
+        
+        
         userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
-        [player setName:userInput];
-        [[*playerManager players] addObject:player];
-        NSLog(@"adding player number %d (%@)", i, [player name]);
+        
+        NSString *trimmedString = [userInput stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+        
+        int numPlayers = [trimmedString intValue];
+        
+        if(numPlayers == 0){
+            NSLog(@"invalid number; pick a number 1 - 10");
+            continue;
+        }
+        
+        for(int i = 0; i < numPlayers; i++){
+            
+            NSLog(@"%@%d> ", playerNamePrompt, i);
+            fgets(input, 255, stdin);
+            userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
+           // [player setName:userInput];
+            [*playerManager createPlayer:userInput];
+//            [[*playerManager players] addObject:player];
+            NSLog(@"adding player number %d <%@>", i, userInput);
+        }
+        NSLog(@"...finished adding players to player list...");
+        break;
     }
-    NSLog(@"...finished adding players to player list...");
 }
 
 int main(int argc, const char * argv[]) {
@@ -47,7 +60,7 @@ int main(int argc, const char * argv[]) {
         PlayerManager *playerManager = [[PlayerManager alloc] init];
         
         instantiatePlayers(&playerManager);
-
+        
         Player *player = [[Player alloc] init];
         player = [[playerManager players] objectAtIndex:0];
         
@@ -68,6 +81,9 @@ int main(int argc, const char * argv[]) {
                 if([player currentSquare] >= 100){
                     [player setGameOver:YES];
                     NSLog(@"game is over");
+                    
+                    // release all players
+                    [[playerManager players] removeAllObjects];
                 }
             }
             

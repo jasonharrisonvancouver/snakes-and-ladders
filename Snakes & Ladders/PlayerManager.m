@@ -19,4 +19,15 @@
     return self;
 }
 
+- (void)roll{
+    [self.currentPlayer roll];
+}
+
+- (void)createPlayer:(NSString *)name{
+    Player *player = [[Player alloc] init];
+    [player setName:name];
+    [self.players addObject:player];
+}
+
+
 @end
