@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, readwrite, strong)NSMutableArray<Player *> *players;
 @property (nonatomic, readwrite, strong)Player *currentPlayer;
+@property (nonatomic, readwrite)NSInteger indexOfCurrentPlayer;
 
 - (void)roll;
 - (void)createPlayer:(NSString *)name;

@@ -61,10 +61,12 @@ int main(int argc, const char * argv[]) {
         
         instantiatePlayers(&playerManager);
         
-        Player *player = [[Player alloc] init];
-        player = [[playerManager players] objectAtIndex:0];
+        //Player *player = [[Player alloc] init];
+        //player = [[playerManager players] objectAtIndex:0];
         
-        while(NO == [player gameOver]){
+        
+        
+        while(NO == [[playerManager currentPlayer] gameOver]){
             NSLog(@"%@", playGamePrompt);
             fgets(input, 255, stdin);
             userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
@@ -76,10 +78,10 @@ int main(int argc, const char * argv[]) {
                ([trimmedString isEqualToString:@"roll\n"]))
             {
                 NSLog(@"you typed %@", userInput);
-                [player roll];
+                [playerManager roll];
                 
-                if([player currentSquare] >= 100){
-                    [player setGameOver:YES];
+                if([[playerManager currentPlayer] currentSquare] >= 100){
+                    [[playerManager currentPlayer] setGameOver:YES];
                     NSLog(@"game is over");
                     
                     // release all players
