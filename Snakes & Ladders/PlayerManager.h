@@ -19,6 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)roll;
 - (void)createPlayer:(NSString *)name;
+- (NSString *)score;
 @end
 
 NS_ASSUME_NONNULL_END

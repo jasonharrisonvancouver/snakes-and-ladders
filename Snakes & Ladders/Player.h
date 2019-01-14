@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property BOOL gameOver;
 
 - (void)roll;
+- (NSString *)score;
 
 @end
 
