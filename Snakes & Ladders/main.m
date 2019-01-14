@@ -23,7 +23,7 @@ void instantiatePlayers(PlayerManager **playerManager){
     NSString *playerNamePrompt = @"Name of player ";
     char input[255];
     NSString *userInput;
-   // Player *player = [[Player alloc] init];
+    // Player *player = [[Player alloc] init];
     
     
     
@@ -49,9 +49,9 @@ void instantiatePlayers(PlayerManager **playerManager){
             NSLog(@"%@%d> ", playerNamePrompt, i);
             fgets(input, 255, stdin);
             userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
-           // [player setName:userInput];
+            // [player setName:userInput];
             [*playerManager createPlayer:userInput];
-//            [[*playerManager players] addObject:player];
+            //            [[*playerManager players] addObject:player];
             NSLog(@"adding player number %d <%@>", i, userInput);
         }
         NSLog(@"...finished adding players to player list...");
@@ -62,50 +62,85 @@ void instantiatePlayers(PlayerManager **playerManager){
 int main(int argc, const char * argv[]) {
     @autoreleasepool {
         
-        //Player *player = [[Player alloc] init];
-        PlayerManager *playerManager = [[PlayerManager alloc] init];
+        BOOL stop = NO;
         
-        instantiatePlayers(&playerManager);
-        
-        char input[255];
-        NSString *userInput;
-        NSString *playGamePrompt = [NSString stringWithFormat:@"\nPlayer %@, type roll (or r): ", [[playerManager currentPlayer] name]];
-
-        
-        
-        //Player *player = [[Player alloc] init];
-        //player = [[playerManager players] objectAtIndex:0];
-        
-        
-        
-        while(NO == [[playerManager currentPlayer] gameOver]){
-            playGamePrompt = [NSString stringWithFormat:@"\nPlayer %@, type roll (or r): ", [[playerManager currentPlayer] name]];
-            NSLog(@"%@", playGamePrompt);
-            fgets(input, 255, stdin);
-            userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
+        while(NO == stop){
             
-            NSString *trimmedString = [userInput stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            //Player *player = [[Player alloc] init];
+            PlayerManager *playerManager = [[PlayerManager alloc] init];
+            
+            instantiatePlayers(&playerManager);
+            
+            char input[255];
+            NSString *userInput;
+            NSString *playGamePrompt = [NSString stringWithFormat:@"\nPlayer %@, type roll (or r) or quit: ", [[playerManager currentPlayer] name]];
             
             
-            if(([trimmedString isEqualToString:@"r\n"]) ||
-               ([trimmedString isEqualToString:@"roll\n"]))
-            {
-               // NSLog(@"you typed %@", userInput);
-                [playerManager roll];
-                IFPrint(@"%@",[playerManager score]);
+            
+            //Player *player = [[Player alloc] init];
+            //player = [[playerManager players] objectAtIndex:0];
+            
+            
+            
+            //while(NO == [[playerManager currentPlayer] gameOver]){
+            while(NO == stop){
+                playGamePrompt = [NSString stringWithFormat:@"\nPlayer %@, type roll (or r) or quit: ", [[playerManager currentPlayer] name]];
+                NSLog(@"%@", playGamePrompt);
+                fgets(input, 255, stdin);
+                userInput = [NSString stringWithCString:input encoding:NSUTF8StringEncoding];
                 
-                if([[playerManager currentPlayer] currentSquare] >= 100){
-                    [[playerManager currentPlayer] setGameOver:YES];
-                    NSLog(@"game is over: %@ wins!", [[playerManager currentPlayer] name]);
+                NSMutableString *trimmedString = (NSMutableString *)[userInput stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                
+                trimmedString = (NSMutableString *)[trimmedString lowercaseString];
+                
+                
+                if(([trimmedString isEqualToString:@"r\n"]) ||
+                   ([trimmedString isEqualToString:@"roll\n"]))
+                {
+                    // NSLog(@"you typed %@", userInput);
+                    [playerManager roll];
+                    IFPrint(@"%@",[playerManager score]);
                     
-                    // release all players
-                    [[playerManager players] removeAllObjects];
-                    break;
+                    if([[playerManager currentPlayer] currentSquare] >= 100){
+                        [[playerManager currentPlayer] setGameOver:YES];
+                        NSLog(@"game is over: %@ wins!", [[playerManager currentPlayer] name]);
+                        
+                        // release all players
+                        [[playerManager currentPlayer] setGameOver:NO];
+                        
+                        [[playerManager players] removeAllObjects];
+                        
+                        //continue;
+                        break;
+                    }
+                }else if([trimmedString isEqualToString:@"quit\n"]){
+                    
+                    char answer[255];
+                    NSLog(@"Quit? or Restart? ");
+                    fgets(answer, 255, stdin);
+                    
+                    NSString *userAnswer = [NSString stringWithCString:answer encoding:NSUTF8StringEncoding];
+                    
+                    NSMutableString *trimmedAnswer = (NSMutableString *)[userAnswer stringByTrimmingCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                    
+                    trimmedAnswer = (NSMutableString *)[trimmedAnswer lowercaseString];
+                    
+                    if([trimmedAnswer isEqualToString:@"quit\n"]){
+                    
+                        NSLog(@"You chose to quit. Bye.");
+                        stop = YES;
+                        
+                    }else if([trimmedAnswer isEqualToString:@"restart\n"]){
+                        NSLog(@"You chose to restart.");
+                        break;
+                    }else{
+                        NSLog(@"Error. Goodbye.");
+                        stop = YES;
+                    }
                 }
+                
             }
-            
         }
-        
         
         
     }
